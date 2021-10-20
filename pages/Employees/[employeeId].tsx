@@ -17,7 +17,7 @@ export async function getStaticProps(context: { params: any }) {
   const { employeetId } = params;
 
   const newData = data.find(
-    (comment: { id: number }) => comment.id === employeetId
+    (employee: { id: number }) => employee.id === employeetId
   );
 
   console.log(employeetId, ">>>");
@@ -37,9 +37,9 @@ export async function getStaticProps(context: { params: any }) {
 export async function getStaticPaths() {
   return {
     paths: [
-      { params: { commentId: "1" } },
-      { params: { commentId: "2" } },
-      { params: { commentId: "3" } },
+      { params: { employeeId: "1" } },
+      { params: { employeeId: "2" } },
+      { params: { employeeId: "3" } },
     ],
     fallback: false,
   };
