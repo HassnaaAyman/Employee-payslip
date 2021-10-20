@@ -17,8 +17,9 @@ export async function getStaticProps(context: { params: any }) {
   const { employeetId } = params;
 
   const newData = data.find(
-    (comment: { id: number }) => comment.id === parseInt(employeetId)
+    (comment: { id: number }) => comment.id === employeetId
   );
+
   console.log(employeetId, ">>>");
 
   /** Don't do this 
