@@ -1,7 +1,7 @@
 import React from "react";
 import { Form, Input, Button, InputNumber, DatePicker } from "antd";
 import styled, { StyledComponent } from "styled-components";
-import { useEmployeeContext } from "../../context/state";
+import { useRouter } from "next/router";
 
 type Props = {
   firstName: string;
@@ -13,7 +13,7 @@ type Props = {
 
 const CreateEmployee = () => {
   const [form] = Form.useForm();
-  const { createEmployee } = useEmployeeContext();
+  const router = useRouter();
 
   const tailLayout = {
     wrapperCol: { offset: 8, span: 16 },
@@ -23,6 +23,16 @@ const CreateEmployee = () => {
     form.resetFields();
   };
 
+  const submitEmployee = async (values: Props) => {
+    await fetch("/api/employees", {
+      method: "POST",
+      body: JSON.stringify(values),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+  };
+
   return (
     <Container>
       <Title>Create Employee</Title>
@@ -30,7 +40,10 @@ const CreateEmployee = () => {
         form={form}
         name="control-hooks"
         layout="vertical"
-        onFinish={(values: Props) => createEmployee(values)}
+        onFinish={async (values: Props) => {
+          submitEmployee(values);
+          router.push("/Employees");
+        }}
       >
         <Form.Item
           name="firstName"

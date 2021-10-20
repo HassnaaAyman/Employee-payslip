@@ -10,13 +10,13 @@ type DataProps = {
 };
 
 type EmployeeContextType = {
-  data: {
+  data: Array<{
     firstName: string;
     lastName: string;
     annualSalary: number;
     evaluationRate: number;
     paymentStartDate: Date;
-  };
+  }>;
   createEmployee: (c: DataProps) => void;
 };
 
@@ -25,13 +25,15 @@ type Props = {
 };
 
 const EmployeeContextDefaultValues: EmployeeContextType = {
-  data: {
-    firstName: "hassnaa",
-    lastName: "ayman",
-    annualSalary: 120000,
-    evaluationRate: 10,
-    paymentStartDate: new Date(),
-  },
+  data: [
+    {
+      firstName: "hassnaa",
+      lastName: "ayman",
+      annualSalary: 120000,
+      evaluationRate: 10,
+      paymentStartDate: new Date(),
+    },
+  ],
   createEmployee: () => {},
 };
 
@@ -40,16 +42,18 @@ const EmployeeContext = createContext<EmployeeContextType>(
 );
 
 export const EmployeeProvider = ({ children }: Props) => {
-  const [data, setData] = useState<DataProps>({
-    firstName: "hassnaa",
-    lastName: "ayman",
-    annualSalary: 120000,
-    evaluationRate: 10,
-    paymentStartDate: new Date(),
-  });
+  const [data, setData] = useState<Array<DataProps>>([
+    {
+      firstName: "hassnaa",
+      lastName: "ayman",
+      annualSalary: 120000,
+      evaluationRate: 10,
+      paymentStartDate: new Date(),
+    },
+  ]);
 
-  const createEmployee = (formData: DataProps) => {
-    setData(formData);
+  const createEmployee = (formData: Array<DataProps>) => {
+    setData((prevState: any) => [...prevState, formData]);
   };
 
   const value = {
