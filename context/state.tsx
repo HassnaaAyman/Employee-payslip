@@ -5,8 +5,8 @@ type DataProps = {
   firstName: string;
   lastName: string;
   annualSalary: number;
-  evaluationRate: string;
-  paymentStartSate: Date;
+  evaluationRate: number;
+  paymentStartDate: Date;
 };
 
 type EmployeeContextType = {
@@ -14,8 +14,8 @@ type EmployeeContextType = {
     firstName: string;
     lastName: string;
     annualSalary: number;
-    evaluationRate: string;
-    paymentStartSate: Date;
+    evaluationRate: number;
+    paymentStartDate: Date;
   };
   createEmployee: (c: DataProps) => void;
 };
@@ -29,8 +29,8 @@ const EmployeeContextDefaultValues: EmployeeContextType = {
     firstName: "hassnaa",
     lastName: "ayman",
     annualSalary: 120000,
-    evaluationRate: "10%",
-    paymentStartSate: new Date(),
+    evaluationRate: 10,
+    paymentStartDate: new Date(),
   },
   createEmployee: () => {},
 };
@@ -44,8 +44,8 @@ export const EmployeeProvider = ({ children }: Props) => {
     firstName: "hassnaa",
     lastName: "ayman",
     annualSalary: 120000,
-    evaluationRate: "10%",
-    paymentStartSate: new Date(),
+    evaluationRate: 10,
+    paymentStartDate: new Date(),
   });
 
   const createEmployee = (formData: DataProps) => {

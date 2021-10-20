@@ -1,7 +1,15 @@
 import React from "react";
 import { Form, Input, Button, InputNumber, DatePicker } from "antd";
-import styled from "styled-components";
+import styled, { StyledComponent } from "styled-components";
 import { useEmployeeContext } from "../../context/state";
+
+type Props = {
+  firstName: string;
+  lastName: string;
+  annualSalary: number;
+  evaluationRate: number;
+  paymentStartDate: Date;
+};
 
 const CreateEmployee = () => {
   const [form] = Form.useForm();
@@ -22,7 +30,7 @@ const CreateEmployee = () => {
         form={form}
         name="control-hooks"
         layout="vertical"
-        onFinish={(values) => createEmployee(values)}
+        onFinish={(values: Props) => createEmployee(values)}
       >
         <Form.Item
           name="firstName"
@@ -54,10 +62,9 @@ const CreateEmployee = () => {
           rules={[{ required: true }]}
         >
           <StyledInputNumber
-            defaultValue={0}
             min={0}
             max={12}
-            formatter={(value) => `${value}%`}
+            formatter={(value: number) => `${value}%`}
             parser={(value?: string) => value?.replace("%", "")}
           />
         </Form.Item>
@@ -107,13 +114,15 @@ const Title = styled.h1`
   width: 100%;
 `;
 
-const StyledInputNumber = styled(InputNumber)`
+const StyledInputNumber: StyledComponent<any, any, {}, never> = styled(
+  InputNumber
+)`
   &.ant-input-number {
     width: 100%;
   }
 `;
 
-const StyledForm = styled(Form)`
+const StyledForm: StyledComponent<any, any, {}, never> = styled(Form)`
   width: 55%;
 `;
 
