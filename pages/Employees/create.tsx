@@ -1,34 +1,14 @@
-import { Form, Input, Button, Select } from "antd";
+import React from "react";
+import { Form, Input, Button, InputNumber, DatePicker } from "antd";
 import styled from "styled-components";
-
-const { Option } = Select;
-
-const layout = {
-  labelCol: { span: 8 },
-  wrapperCol: { span: 16 },
-};
-const tailLayout = {
-  wrapperCol: { offset: 8, span: 16 },
-};
+import { useEmployeeContext } from "../../context/state";
 
 const CreateEmployee = () => {
   const [form] = Form.useForm();
+  const { createEmployee } = useEmployeeContext();
 
-  const onGenderChange = (value: string) => {
-    switch (value) {
-      case "male":
-        form.setFieldsValue({ note: "Hi, man!" });
-        return;
-      case "female":
-        form.setFieldsValue({ note: "Hi, lady!" });
-        return;
-      case "other":
-        form.setFieldsValue({ note: "Hi there!" });
-    }
-  };
-
-  const onFinish = (values: any) => {
-    console.log(values);
+  const tailLayout = {
+    wrapperCol: { offset: 8, span: 16 },
   };
 
   const onReset = () => {
@@ -37,39 +17,59 @@ const CreateEmployee = () => {
 
   return (
     <Container>
-      <Form {...layout} form={form} name="control-hooks" onFinish={onFinish}>
-        <Form.Item name="note" label="Note" rules={[{ required: true }]}>
+      <Title>Create Employee</Title>
+      <StyledForm
+        form={form}
+        name="control-hooks"
+        layout="vertical"
+        onFinish={(values) => createEmployee(values)}
+      >
+        <Form.Item
+          name="firstName"
+          label="FirstName"
+          rules={[{ required: true }]}
+        >
           <Input />
         </Form.Item>
-        <Form.Item name="gender" label="Gender" rules={[{ required: true }]}>
-          <Select
-            placeholder="Select a option and change input text above"
-            onChange={onGenderChange}
-            allowClear
-          >
-            <Option value="male">male</Option>
-            <Option value="female">female</Option>
-            <Option value="other">other</Option>
-          </Select>
-        </Form.Item>
+
         <Form.Item
-          noStyle
-          shouldUpdate={(prevValues, currentValues) =>
-            prevValues.gender !== currentValues.gender
-          }
+          name="lastName"
+          label="LastName"
+          rules={[{ required: true }]}
         >
-          {({ getFieldValue }) =>
-            getFieldValue("gender") === "other" ? (
-              <Form.Item
-                name="customizeGender"
-                label="Customize Gender"
-                rules={[{ required: true }]}
-              >
-                <Input />
-              </Form.Item>
-            ) : null
-          }
+          <Input />
         </Form.Item>
+
+        <Form.Item
+          name="annualSalary"
+          label="AnnualSalary"
+          rules={[{ required: true }]}
+        >
+          <StyledInputNumber min={0} />
+        </Form.Item>
+
+        <Form.Item
+          name="evaluationRate"
+          label="EvaluationRate"
+          rules={[{ required: true }]}
+        >
+          <StyledInputNumber
+            defaultValue={0}
+            min={0}
+            max={12}
+            formatter={(value) => `${value}%`}
+            parser={(value?: string) => value?.replace("%", "")}
+          />
+        </Form.Item>
+
+        <Form.Item
+          label="DatePicker"
+          name="paymentStartDate"
+          rules={[{ required: true }]}
+        >
+          <StyledDatePicker />
+        </Form.Item>
+
         <Form.Item {...tailLayout}>
           <Button type="primary" htmlType="submit">
             Submit
@@ -78,7 +78,7 @@ const CreateEmployee = () => {
             Reset
           </Button>
         </Form.Item>
-      </Form>
+      </StyledForm>
     </Container>
   );
 };
@@ -87,5 +87,38 @@ export default CreateEmployee;
 
 const Container = styled.div`
   width: 90%;
-  margin: 0 auto;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  margin: auto;
+  height: 75%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`;
+
+const Title = styled.h1`
+  color: black;
+  font-weight: bold;
+  margin-bottom: 30px;
+  text-align: center;
+  width: 100%;
+`;
+
+const StyledInputNumber = styled(InputNumber)`
+  &.ant-input-number {
+    width: 100%;
+  }
+`;
+
+const StyledForm = styled(Form)`
+  width: 55%;
+`;
+
+const StyledDatePicker = styled(DatePicker)`
+  &.ant-picker {
+    width: 100%;
+  }
 `;

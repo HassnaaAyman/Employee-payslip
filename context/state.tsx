@@ -1,7 +1,15 @@
 import { ReactNode, useState } from "react";
 import { createContext, useContext } from "react";
 
-export type EmployeeContextType = {
+type DataProps = {
+  firstName: string;
+  lastName: string;
+  annualSalary: number;
+  evaluationRate: string;
+  paymentStartSate: Date;
+};
+
+type EmployeeContextType = {
   data: {
     firstName: string;
     lastName: string;
@@ -9,19 +17,11 @@ export type EmployeeContextType = {
     evaluationRate: string;
     paymentStartSate: Date;
   };
-  createEmployee: (c: string) => void;
+  createEmployee: (c: DataProps) => void;
 };
 
 type Props = {
   children: ReactNode;
-};
-
-type DataProps = {
-  firstName: string;
-  lastName: string;
-  annualSalary: number;
-  evaluationRate: string;
-  paymentStartSate: Date;
 };
 
 const EmployeeContextDefaultValues: EmployeeContextType = {
@@ -48,7 +48,7 @@ export const EmployeeProvider = ({ children }: Props) => {
     paymentStartSate: new Date(),
   });
 
-  const createEmployee = (formData) => {
+  const createEmployee = (formData: DataProps) => {
     setData(formData);
   };
 
