@@ -1,6 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from "next";
-import { data } from "../../../data/employees";
-import { v4 as uuidv4 } from "uuid";
+import connectDB from "../../../middleware/mongodb";
+import Employee from "../../../models/employee";
 
 type Data = {
   firstName: string;
@@ -10,26 +10,23 @@ type Data = {
   paymentStartDate: Date;
 };
 
-export default function handler(
+const handler = async (
   req: NextApiRequest,
   res: NextApiResponse<Array<Data>>
-) {
+) => {
   if (req.method === "GET") {
-    // res.setHeader("Cache-Control", "max-age=180000");
-    res.status(200).json(data);
+    res.status(200).json(await Employee.find().exec());
   } else if (req.method === "POST") {
-    const employee = req.body;
-    const newEmployee: any = {
-      id: uuidv4(),
-      firstName: employee.firstName,
-      lastName: employee.lastName,
-      annualSalary: employee.annualSalary,
-      evaluationRate: employee.evaluationRate,
-      paymentStartDate: employee.paymentStartDate,
-    };
+    const body = req.body;
+    const employee: any = new Employee({
+      firstName: body.firstName,
+      lastName: body.lastName,
+      annualSalary: body.annualSalary,
+      evaluationRate: body.evaluationRate,
+      paymentStartDate: body.paymentStartDate,
+    });
 
-    data.push(newEmployee);
-
-    res.status(201).json(newEmployee);
+    res.status(201).json(await employee.save());
   }
-}
+};
+export default connectDB(handler);

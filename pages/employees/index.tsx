@@ -8,15 +8,13 @@ const Employees = () => {
   const router = useRouter();
   const { data } = useEmployeeContext();
 
-  console.log({ data }, ">>>");
-
   const columns = [
     {
       title: "FirstName",
       dataIndex: "firstName",
       width: 150,
-      render: (text: string, record: { id: number }) => (
-        <a onClick={() => router.push(`employees/${record.id}`)}> {text}</a>
+      render: (text: string, record: { _id: number }) => (
+        <a onClick={() => router.push(`employees/${record._id}`)}> {text}</a>
       ),
     },
     {

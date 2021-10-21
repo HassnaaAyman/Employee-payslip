@@ -2,7 +2,7 @@ import { ReactNode, useState, useEffect, useCallback } from "react";
 import { createContext, useContext } from "react";
 
 type DataProps = {
-  id?: number;
+  _id?: number;
   firstName: string;
   lastName: string;
   annualSalary: number;
@@ -12,7 +12,7 @@ type DataProps = {
 
 type EmployeeContextType = {
   data: Array<{
-    id: number;
+    _id: number;
     firstName: string;
     lastName: string;
     annualSalary: number;

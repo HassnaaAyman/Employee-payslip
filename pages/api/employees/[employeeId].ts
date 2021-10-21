@@ -1,14 +1,20 @@
-import { data } from "../../../data/employees";
 import type { NextApiRequest, NextApiResponse } from "next";
+import Employee from "../../../models/employee";
 
-export default function handler(req: NextApiRequest, res: NextApiResponse) {
+export default async function handler(
+  req: NextApiRequest,
+  res: NextApiResponse
+) {
   const { employeeId }: any = req.query;
-  if (req.method === "GET") {
-    const employee = data.find((employee) => employee.id == employeeId);
-    if (!employee) {
-      return res.status(404).json({ message: "Not Found" });
+  try {
+    if (req.method === "GET") {
+      const employee = await Employee.findById(employeeId).exec();
+      if (!employee) {
+        return res.status(404).json({ message: "Not Found" });
+      }
+      return res.status(200).json(employee);
     }
-
-    res.status(200).json(employee);
+  } catch (e) {
+    return res.status(404).json({ message: "Not Found" });
   }
 }
