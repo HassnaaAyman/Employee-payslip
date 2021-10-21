@@ -1,21 +1,14 @@
-import { useEffect, useState } from "react";
 import { Table } from "antd";
 import { timeStampToDate } from "../../helpers/timeStamptoDate";
 import styled from "styled-components";
 import { useRouter } from "next/router";
+import { useEmployeeContext } from "../../context/state";
 
 const Employees = () => {
-  const [data, setData] = useState();
   const router = useRouter();
+  const { data } = useEmployeeContext();
 
-  useEffect(() => {
-    const fetchComments = async () => {
-      const response = await fetch("/api/employees");
-      const data = await response.json();
-      setData(data);
-    };
-    fetchComments();
-  }, []);
+  console.log({ data }, ">>>");
 
   const columns = [
     {
@@ -51,6 +44,7 @@ const Employees = () => {
     <Container>
       <Title> Employees</Title>
       <Table
+        rowKey="id"
         columns={columns}
         dataSource={data}
         pagination={false}

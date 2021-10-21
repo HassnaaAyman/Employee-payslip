@@ -1,8 +1,7 @@
-import { data } from "../../data/employees";
-
-function EmployeeDetails({ employee }: any) {
-  console.log({ employee });
-
+function EmployeeDetails({ employee, message }: any) {
+  if (message) {
+    return <p> {message} </p>;
+  }
   return (
     <div>
       {employee.id}. {employee.firstName}
@@ -12,34 +11,24 @@ function EmployeeDetails({ employee }: any) {
 
 export default EmployeeDetails;
 
-export async function getStaticProps(context: { params: any }) {
+export async function getServerSideProps(context: { params: any }) {
   const { params } = context;
-  const { employeetId } = params;
+  const { employeeId } = params;
 
-  const newData = data.find(
-    (comment: { id: number }) => comment.id === parseInt(employeetId)
-  );
-  console.log(employeetId, ">>>");
-
-  /** Don't do this 
-  const response = await fetch(`http:localhost:3000/api/comments/${commentId}`)
-  const data = await response.json()
-  */
+  const res = await fetch(`http://localhost:3000/api/employees/${employeeId}`);
+  const employee = await res.json();
+  if (employee.hasOwnProperty("message")) {
+    return {
+      props: {
+        message: employee.message,
+      },
+    };
+  }
+  console.log({ employee });
 
   return {
     props: {
-      newData,
+      employee,
     },
-  };
-}
-
-export async function getStaticPaths() {
-  return {
-    paths: [
-      { params: { commentId: "1" } },
-      { params: { commentId: "2" } },
-      { params: { commentId: "3" } },
-    ],
-    fallback: false,
   };
 }

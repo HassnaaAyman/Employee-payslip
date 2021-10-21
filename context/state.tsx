@@ -1,7 +1,8 @@
-import { ReactNode, useState } from "react";
+import { ReactNode, useState, useEffect, useCallback } from "react";
 import { createContext, useContext } from "react";
 
 type DataProps = {
+  id?: number;
   firstName: string;
   lastName: string;
   annualSalary: number;
@@ -11,6 +12,7 @@ type DataProps = {
 
 type EmployeeContextType = {
   data: Array<{
+    id: number;
     firstName: string;
     lastName: string;
     annualSalary: number;
@@ -25,15 +27,7 @@ type Props = {
 };
 
 const EmployeeContextDefaultValues: EmployeeContextType = {
-  data: [
-    {
-      firstName: "hassnaa",
-      lastName: "ayman",
-      annualSalary: 120000,
-      evaluationRate: 10,
-      paymentStartDate: new Date(),
-    },
-  ],
+  data: [],
   createEmployee: () => {},
 };
 
@@ -42,19 +36,28 @@ const EmployeeContext = createContext<EmployeeContextType>(
 );
 
 export const EmployeeProvider = ({ children }: Props) => {
-  const [data, setData] = useState<Array<DataProps>>([
-    {
-      firstName: "hassnaa",
-      lastName: "ayman",
-      annualSalary: 120000,
-      evaluationRate: 10,
-      paymentStartDate: new Date(),
-    },
-  ]);
+  const [data, setData] = useState<Array<DataProps>>([]);
 
-  const createEmployee = (formData: Array<DataProps>) => {
-    setData((prevState: any) => [...prevState, formData]);
-  };
+  useEffect(() => {
+    const fetchData = async () => {
+      const res = await fetch("/api/employees");
+      const data = await res.json();
+      setData(data);
+    };
+    fetchData();
+  }, []);
+
+  const createEmployee = useCallback(async (formData: DataProps) => {
+    const res = await fetch("/api/employees", {
+      method: "POST",
+      body: JSON.stringify(formData),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    const data = await res.json();
+    setData((prevState: any) => [...prevState, data]);
+  }, []);
 
   const value = {
     data,
