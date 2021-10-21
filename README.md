@@ -9,10 +9,6 @@ git clone https:/github.com/repo task && cd task
 ```
 
 ```bash
-yarn
-```
-
-```bash
 yarn dev
 ```
 

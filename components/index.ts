@@ -23,7 +23,7 @@ export const Title = styled.h1`
 `;
 
 export const StyledButton = styled(Button)`
-  width: 10%;
+  width: fit-content;
   margin-bottom: 20px;
   alig-items: center;
 `;

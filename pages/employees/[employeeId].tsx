@@ -1,4 +1,4 @@
-import { Table, Alert } from "antd";
+import { Table, Alert, Descriptions } from "antd";
 import { EmployeeDetailsProps } from "../../types";
 import { Container, Title } from "../../components";
 
@@ -9,41 +9,30 @@ const EmployeeDetails = ({ employee, message, meta }: EmployeeDetailsProps) => {
     );
   }
 
-  const columns = [
-    {
-      title: "name",
-      width: 150,
-      render: (record: { firstName: string; lastName: string }) =>
-        record.firstName + " " + record.lastName,
-    },
-    {
-      title: "gross-icome",
-      dataIndex: "grossIncome",
-    },
-    {
-      title: "income-tax",
-      dataIndex: "incomeTax",
-    },
-    {
-      title: "net-income",
-      dataIndex: "netIncome",
-    },
-    {
-      title: "incentive-bonus",
-      dataIndex: "incentiveBonus",
-    },
-  ];
-
   return (
     <Container>
       <Title>Employee Details</Title>
-      <Table
-        rowKey="_id"
-        columns={columns}
-        dataSource={[{ ...employee, ...meta }]}
-        pagination={false}
-        scroll={{ y: 240 }}
-      />
+      <Descriptions
+        bordered
+        layout="vertical"
+        column={{ xxl: 4, xl: 3, lg: 3, md: 3, sm: 2, xs: 1 }}
+      >
+        <Descriptions.Item label="Name">
+          {employee.firstName + " " + employee.lastName}
+        </Descriptions.Item>
+        <Descriptions.Item label="Gross-Income">
+          {meta.grossIncome}
+        </Descriptions.Item>
+        <Descriptions.Item label="Income-Tax">
+          {meta.incomeTax}
+        </Descriptions.Item>
+        <Descriptions.Item label="Net-Income">
+          {meta.netIncome}
+        </Descriptions.Item>
+        <Descriptions.Item label="Incentive-Bonus">
+          {meta.incentiveBonus}
+        </Descriptions.Item>
+      </Descriptions>
     </Container>
   );
 };
