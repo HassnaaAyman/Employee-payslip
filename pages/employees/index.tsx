@@ -14,7 +14,7 @@ const Employees = () => {
       dataIndex: "firstName",
       width: 150,
       render: (text: string, record: { _id: number }) => (
-        <a onClick={() => router.push(`employees/${record._id}`)}> {text}</a>
+        <a onClick={() => router.push(`/employees/${record._id}`)}> {text}</a>
       ),
     },
     {

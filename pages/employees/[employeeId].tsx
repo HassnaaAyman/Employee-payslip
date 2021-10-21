@@ -1,4 +1,4 @@
-import { Table, Alert, Descriptions } from "antd";
+import { Alert, Descriptions } from "antd";
 import { EmployeeDetailsProps } from "../../types";
 import { Container, Title } from "../../components";
 
@@ -45,7 +45,7 @@ export async function getServerSideProps(context: {
   const { params } = context;
   const { employeeId } = params;
 
-  const res = await fetch(`http://localhost:3000/api/employees/${employeeId}`);
+  const res = await fetch(`${process.env.APP_URL}/employees/${employeeId}`);
   const response = await res.json();
 
   return {
