@@ -2,7 +2,7 @@
 module.exports = {
   reactStrictMode: true,
   env: {
-    mongodburl: process.env.MONGOOSE_URL,
+    mongodburl: process.env.MONGOOSE_URI,
   },
   async redirects() {
     return [

@@ -2,7 +2,7 @@ This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next
 
 ## About The Repo
 
-The project using nextjs , contextApi , next-api , mongoosedb , typescript , antd and styled-components
+The project uses nextjs , contextApi , next-api , mongoosedb , typescript , antd and styled-components
 
 ## Getting Started
 
