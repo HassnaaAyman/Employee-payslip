@@ -1,16 +1,15 @@
 import React from "react";
-import { Form, Input, Button, InputNumber, DatePicker } from "antd";
-import styled, { StyledComponent } from "styled-components";
+import { Form, Input, Button, notification } from "antd";
 import { useRouter } from "next/router";
 import { useEmployeeContext } from "../../context/state";
-
-type Props = {
-  firstName: string;
-  lastName: string;
-  annualSalary: number;
-  evaluationRate: number;
-  paymentStartDate: Date;
-};
+import { DataProps } from "../../types";
+import {
+  Container,
+  Title,
+  StyledForm,
+  StyledInputNumber,
+  StyledDatePicker,
+} from "../../components";
 
 const CreateEmployee = () => {
   const [form] = Form.useForm();
@@ -32,15 +31,27 @@ const CreateEmployee = () => {
         form={form}
         name="control-hooks"
         layout="vertical"
-        onFinish={async (values: Props) => {
+        onFinish={async (values: Exclude<DataProps, "_id">) => {
           createEmployee(values);
+          notification.success({
+            placement: "topRight",
+            bottom: 50,
+            duration: 1,
+            message: "success",
+          });
+
           router.push("/employees");
         }}
       >
         <Form.Item
           name="firstName"
           label="FirstName"
-          rules={[{ required: true }]}
+          rules={[
+            {
+              required: true,
+              pattern: /^[a-z\s]{0,255}$/i,
+            },
+          ]}
         >
           <Input />
         </Form.Item>
@@ -48,7 +59,12 @@ const CreateEmployee = () => {
         <Form.Item
           name="lastName"
           label="LastName"
-          rules={[{ required: true }]}
+          rules={[
+            {
+              required: true,
+              pattern: /^[a-z\s]{0,255}$/i,
+            },
+          ]}
         >
           <Input />
         </Form.Item>
@@ -56,7 +72,13 @@ const CreateEmployee = () => {
         <Form.Item
           name="annualSalary"
           label="AnnualSalary"
-          rules={[{ required: true }]}
+          rules={[
+            {
+              type: "number",
+              min: 0,
+              required: true,
+            },
+          ]}
         >
           <StyledInputNumber min={0} />
         </Form.Item>
@@ -64,7 +86,7 @@ const CreateEmployee = () => {
         <Form.Item
           name="evaluationRate"
           label="EvaluationRate"
-          rules={[{ required: true }]}
+          rules={[{ required: true, type: "number", min: 0, max: 12 }]}
         >
           <StyledInputNumber
             min={0}
@@ -77,7 +99,7 @@ const CreateEmployee = () => {
         <Form.Item
           label="DatePicker"
           name="paymentStartDate"
-          rules={[{ required: true }]}
+          rules={[{ required: true, type: "date" }]}
         >
           <StyledDatePicker />
         </Form.Item>
@@ -96,43 +118,3 @@ const CreateEmployee = () => {
 };
 
 export default CreateEmployee;
-
-const Container = styled.div`
-  width: 90%;
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  margin: auto;
-  height: 75%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-`;
-
-const Title = styled.h1`
-  color: black;
-  font-weight: bold;
-  margin-bottom: 30px;
-  text-align: center;
-  width: 100%;
-`;
-
-const StyledInputNumber: StyledComponent<any, any, {}, never> = styled(
-  InputNumber
-)`
-  &.ant-input-number {
-    width: 100%;
-  }
-`;
-
-const StyledForm: StyledComponent<any, any, {}, never> = styled(Form)`
-  width: 55%;
-`;
-
-const StyledDatePicker = styled(DatePicker)`
-  &.ant-picker {
-    width: 100%;
-  }
-`;

@@ -1,47 +1,31 @@
-import { ReactNode, useState, useEffect, useCallback } from "react";
+import { ReactNode, useState, useEffect, useCallback, FC } from "react";
 import { createContext, useContext } from "react";
-
-type DataProps = {
-  _id?: number;
-  firstName: string;
-  lastName: string;
-  annualSalary: number;
-  evaluationRate: number;
-  paymentStartDate: Date;
-};
-
-type EmployeeContextType = {
-  data: Array<{
-    _id: number;
-    firstName: string;
-    lastName: string;
-    annualSalary: number;
-    evaluationRate: number;
-    paymentStartDate: Date;
-  }>;
-  createEmployee: (c: DataProps) => void;
-};
-
-type Props = {
-  children: ReactNode;
-};
+import { DataProps, EmployeeContextType } from "../types";
 
 const EmployeeContextDefaultValues: EmployeeContextType = {
   data: [],
   createEmployee: () => {},
+  loading: false,
 };
 
 const EmployeeContext = createContext<EmployeeContextType>(
   EmployeeContextDefaultValues
 );
 
-export const EmployeeProvider = ({ children }: Props) => {
+export const EmployeeProvider: FC<ReactNode> = ({ children }) => {
   const [data, setData] = useState<Array<DataProps>>([]);
+  const [loading, setloading] = useState(false);
 
   useEffect(() => {
+    setloading(true);
     const fetchData = async () => {
       const res = await fetch("/api/employees");
       const data = await res.json();
+      if (res.status === 200) {
+        setloading(false);
+      } else {
+        setloading(false);
+      }
       setData(data);
     };
     fetchData();
@@ -56,10 +40,11 @@ export const EmployeeProvider = ({ children }: Props) => {
       },
     });
     const data = await res.json();
-    setData((prevState: any) => [...prevState, data]);
+    setData((prevState) => [...prevState, data]);
   }, []);
 
   const value = {
+    loading,
     data,
     createEmployee,
   };

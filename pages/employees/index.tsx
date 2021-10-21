@@ -1,12 +1,12 @@
 import { Table } from "antd";
-import { timeStampToDate } from "../../helpers/timeStamptoDate";
-import styled from "styled-components";
 import { useRouter } from "next/router";
+import { timeStampToDate } from "../../helpers/timeStamptoDate";
 import { useEmployeeContext } from "../../context/state";
+import { Container, Title, StyledButton } from "../../components";
 
 const Employees = () => {
   const router = useRouter();
-  const { data } = useEmployeeContext();
+  const { data, loading } = useEmployeeContext();
 
   const columns = [
     {
@@ -41,36 +41,22 @@ const Employees = () => {
   return (
     <Container>
       <Title> Employees</Title>
+      <StyledButton
+        type="primary"
+        onClick={() => router.push("/employees/create")}
+      >
+        Create Employee
+      </StyledButton>
       <Table
-        rowKey="id"
+        rowKey="_id"
         columns={columns}
         dataSource={data}
         pagination={false}
         scroll={{ y: 240 }}
+        loading={loading}
       />
     </Container>
   );
 };
 
 export default Employees;
-
-const Container = styled.div`
-  width: 90%;
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  margin: auto;
-  height: 90%;
-  display: flex;
-  flex-direction: column;
-`;
-
-const Title = styled.h1`
-  color: black;
-  font-weight: bold;
-  margin-bottom: 30px;
-  text-align: start;
-  width: 100%;
-`;
