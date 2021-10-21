@@ -4,6 +4,8 @@ This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next
 
 The project uses nextjs , contextApi , next-api , mongoosedb , typescript , antd and styled-components
 
+Also deployed on vercel.
+
 ## Getting Started
 
 First, run the development server:

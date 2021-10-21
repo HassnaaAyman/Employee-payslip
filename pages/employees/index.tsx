@@ -52,7 +52,7 @@ const Employees = () => {
         columns={columns}
         dataSource={data}
         pagination={false}
-        scroll={{ y: 240 }}
+        scroll={{ y: "100% " }}
         loading={loading}
       />
     </Container>
