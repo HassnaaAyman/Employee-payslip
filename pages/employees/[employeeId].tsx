@@ -45,7 +45,7 @@ export async function getServerSideProps(context: {
   const { params } = context;
   const { employeeId } = params;
 
-  const res = await fetch(`${process.env.APP_URL}/employees/${employeeId}`);
+  const res = await fetch(`${process.env.APP_URL}/api/employees/${employeeId}`);
   const response = await res.json();
 
   return {
